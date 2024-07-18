@@ -14,6 +14,10 @@ let package = Package(
         .library(
             name: "TokamakLite",
             targets: ["TokamakLite"]),
+        .library(
+          name: "TokamakStaticHTML",
+          targets: ["TokamakStaticHTML"]
+        ),
     ],
     dependencies: [
       .package(
