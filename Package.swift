@@ -19,21 +19,9 @@ let package = Package(
           targets: ["TokamakStaticHTML"]
         ),
     ],
-    dependencies: [
-      .package(
-        url: "https://github.com/OpenCombine/OpenCombine.git",
-        from: "0.12.0"
-      ),
-    ],
     targets: [
         .target(
-          name: "TokamakCore",
-          dependencies: [
-            .product(
-              name: "OpenCombineShim",
-              package: "OpenCombine"
-            ),
-          ]
+          name: "TokamakCore"
         ),
         .target(
           name: "TokamakStaticHTML",
