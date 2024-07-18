@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 public struct _AnyApp: App {
   var app: Any
@@ -55,6 +57,7 @@ public struct _AnyApp: App {
     fatalError("`configuration` cannot be set for `AnyApp`. Access underlying `app` value.")
   }
 
+#if canImport(OpenCombineShim)
   @_spi(TokamakCore)
   public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     fatalError("`_AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
@@ -64,4 +67,5 @@ public struct _AnyApp: App {
   public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     fatalError("`_AnyApp` cannot monitor colorScheme. Access underlying `app` value.")
   }
+#endif
 }

@@ -15,7 +15,9 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
  all coming from `body` or `renderedBody` properties) with a tree of mounted element instances
@@ -112,8 +114,11 @@ public final class StackReconciler<R: Renderer> {
 
     performInitialMount()
     if let mountedApp = rootElement as? MountedApp<R> {
+        #if canImport(OpenCombineShim)
+
       setupPersistentSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
       setupPersistentSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
+        #endif
     }
   }
 
@@ -206,12 +211,16 @@ public final class StackReconciler<R: Renderer> {
 
     // break the reference cycle here as subscriptions are stored in the `compositeElement`
     // instance property
+      #if canImport(OpenCombineShim)
+
     observed.objectWillChange.sink { [weak self, weak compositeElement] _ in
       if let compositeElement = compositeElement {
         self?.queueUpdate(for: compositeElement, transaction: .init(animation: nil))
       }
     }.store(in: &compositeElement.transientSubscriptions)
+      #endif
   }
+#if canImport(OpenCombineShim)
 
   private func setupPersistentSubscription<T: Equatable>(
     for publisher: AnyPublisher<T, Never>,
@@ -228,6 +237,7 @@ public final class StackReconciler<R: Renderer> {
       self?.queueUpdate(for: mountedApp, transaction: .init(animation: nil))
     }.store(in: &mountedApp.persistentSubscriptions)
   }
+    #endif
 
   private func body(
     of compositeElement: MountedCompositeElement<R>,
@@ -240,8 +250,10 @@ public final class StackReconciler<R: Renderer> {
         &compositeElement.environmentValues,
         source: &compositeElement[keyPath: keyPath]
       )
+#if canImport(OpenCombineShim)
 
       compositeElement.transientSubscriptions = []
+        #endif
       for property in dynamicProps {
         // Setup state/subscriptions
         if property.type is ValueStorage.Type {

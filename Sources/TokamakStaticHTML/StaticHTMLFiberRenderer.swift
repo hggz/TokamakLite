@@ -16,7 +16,10 @@
 //
 
 import Foundation
+
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 @_spi(TokamakCore)
 import TokamakCore
 
@@ -162,7 +165,10 @@ extension LayoutView: HTMLConvertible {
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
+    
+#if canImport(OpenCombineShim)
   public let sceneSize: CurrentValueSubject<CGSize, Never>
+    #endif
   public let useDynamicLayout: Bool
 
   public init() {
@@ -174,7 +180,10 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
   @_spi(TokamakStaticHTML)
   public init(useDynamicLayout: Bool, sceneSize: CGSize) {
     self.useDynamicLayout = useDynamicLayout
+      
+#if canImport(OpenCombineShim)
     self.sceneSize = .init(sceneSize)
+      #endif
     rootElement = .init(
       tag: "body", attributes: ["style": "margin: 0;"], innerHTML: nil, children: []
     )

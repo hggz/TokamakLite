@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/17/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 /// The renderer must specify a default `_StorageProvider` before any `SceneStorage`
 /// values are accessed.
@@ -29,10 +31,12 @@ public struct SceneStorage<Value>: DynamicProperty {
   let defaultValue: Value
   let store: (_StorageProvider, String, Value) -> ()
   let read: (_StorageProvider, String) -> Value?
+#if canImport(OpenCombineShim)
 
   var objectWillChange: AnyPublisher<(), Never> {
     _DefaultSceneStorageProvider.default.publisher.eraseToAnyPublisher()
   }
+    #endif
 
   public var wrappedValue: Value {
     get {

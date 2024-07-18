@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 /// Provides the ability to set the title of the Scene.
 public protocol _TitledApp {
@@ -33,11 +35,13 @@ public protocol App: _TitledApp {
     with configuration: _AppConfiguration
   )
 
+#if canImport(OpenCombineShim)
   /// Implemented by the renderer to update the `App` on `ScenePhase` changes
   var _phasePublisher: AnyPublisher<ScenePhase, Never> { get }
 
   /// Implemented by the renderer to update the `App` on `ColorScheme` changes
   var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { get }
+#endif
 
   static var _configuration: _AppConfiguration { get }
 

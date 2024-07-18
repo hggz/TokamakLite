@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 // This is very similar to `MountedCompositeView`. However, the `mountedBody`
 // is the computed content of the specified `Scene`, instead of having child

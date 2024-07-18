@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
@@ -35,6 +37,7 @@ public struct EnvironmentValues: CustomStringConvertible {
     }
   }
 
+#if canImport(OpenCombineShim)
   subscript<B>(bindable: ObjectIdentifier) -> B? where B: ObservableObject {
     get {
       values[bindable] as? B
@@ -43,6 +46,7 @@ public struct EnvironmentValues: CustomStringConvertible {
       values[bindable] = newValue
     }
   }
+#endif
 
   @_spi(TokamakCore)
   public mutating func merge(_ other: Self?) {

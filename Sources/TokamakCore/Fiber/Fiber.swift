@@ -16,7 +16,9 @@
 //
 
 import Foundation
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 // swiftlint:disable type_body_length
 @_spi(TokamakCore)
@@ -104,7 +106,9 @@ public extension FiberReconciler {
     ///
     /// Each time properties are bound, a new subscription could be created.
     /// When the subscription is overridden, the old cancellable is released.
+#if canImport(OpenCombineShim)
     var subscriptions: [PropertyInfo: AnyCancellable] = [:]
+  #endif
 
     /// Storage for `PreferenceKey` values as they are passed up the tree.
     var preferences: _PreferenceStore?
@@ -191,6 +195,7 @@ public extension FiberReconciler {
       if self.element != nil {
         self.elementIndex = elementIndex
       }
+#if canImport(OpenCombineShim)
 
       let alternateView = view
       createAndBindAlternate = { [weak self] in
@@ -227,7 +232,9 @@ public extension FiberReconciler {
         }
         return alternate
       }
+        #endif
     }
+#if canImport(OpenCombineShim)
 
     init<V: View>(
       bound view: V,
@@ -262,6 +269,7 @@ public extension FiberReconciler {
       }
       content = content(for: view)
     }
+      #endif
 
     private func bindProperties<T>(
       to content: inout T,
@@ -315,10 +323,13 @@ public extension FiberReconciler {
         }
         // Subscribe to observable properties.
         if let observed = value as? ObservedProperty {
+            #if canImport(OpenCombineShim)
+
           subscriptions[property] = observed.objectWillChange.sink { [weak self] _ in
             guard let self = self else { return }
             self.reconciler?.fiberChanged(self)
           }
+            #endif
         }
         property.set(value: value, on: &content)
       }
@@ -396,6 +407,7 @@ public extension FiberReconciler {
         return nil
       }
     }
+#if canImport(OpenCombineShim)
 
     init<A: App>(
       _ app: inout A,
@@ -453,6 +465,8 @@ public extension FiberReconciler {
         return alternate
       }
     }
+      #endif
+#if canImport(OpenCombineShim)
 
     init<A: App>(
       bound app: A,
@@ -482,6 +496,8 @@ public extension FiberReconciler {
       self.layout = layout
       content = content(for: app)
     }
+      #endif
+#if canImport(OpenCombineShim)
 
     init<S: Scene>(
       _ scene: inout S,
@@ -561,6 +577,8 @@ public extension FiberReconciler {
         return alternate
       }
     }
+      #endif
+#if canImport(OpenCombineShim)
 
     init<S: Scene>(
       bound scene: S,
@@ -595,6 +613,7 @@ public extension FiberReconciler {
       }
       content = content(for: scene)
     }
+      #endif
 
     func update<S: Scene>(
       with scene: inout S

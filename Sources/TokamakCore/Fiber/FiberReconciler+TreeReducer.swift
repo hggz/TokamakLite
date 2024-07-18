@@ -58,6 +58,8 @@ extension FiberReconciler {
     }
 
     static func reduce<S>(into partialResult: inout Result, nextScene: S) where S: Scene {
+        #if canImport(OpenCombineShim)
+
       Self.reduce(
         into: &partialResult,
         nextValue: nextScene,
@@ -77,6 +79,7 @@ extension FiberReconciler {
         },
         visitChildren: { $1._visitChildren }
       )
+        #endif
     }
 
     static func reduce<V>(into partialResult: inout Result, nextView: V) where V: View {

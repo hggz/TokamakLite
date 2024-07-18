@@ -12,15 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
+#if canImport(OpenCombineShim)
 public typealias ObservableObject = OpenCombineShim.ObservableObject
 public typealias Published = OpenCombineShim.Published
+#endif
 
 protocol ObservedProperty: DynamicProperty {
+#if canImport(OpenCombineShim)
   var objectWillChange: AnyPublisher<(), Never> { get }
+#endif
 }
 
+#if canImport(OpenCombineShim)
 @propertyWrapper
 public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: ObservableObject {
   @dynamicMemberLookup
@@ -54,3 +61,4 @@ extension ObservedObject: ObservedProperty {
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 }
+#endif

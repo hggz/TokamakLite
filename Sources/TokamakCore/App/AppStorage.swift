@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 @propertyWrapper
 public struct AppStorage<Value>: DynamicProperty {
@@ -32,10 +34,12 @@ public struct AppStorage<Value>: DynamicProperty {
   let defaultValue: Value
   let store: (_StorageProvider, String, Value) -> ()
   let read: (_StorageProvider, String) -> Value?
+#if canImport(OpenCombineShim)
 
   var objectWillChange: AnyPublisher<(), Never> {
     unwrappedProvider.publisher.eraseToAnyPublisher()
   }
+    #endif
 
   public var wrappedValue: Value {
     get {

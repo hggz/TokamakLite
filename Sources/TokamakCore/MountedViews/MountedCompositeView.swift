@@ -15,7 +15,9 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(

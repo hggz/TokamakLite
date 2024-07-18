@@ -15,16 +15,20 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
+#if canImport(OpenCombineShim)
 public final class NavigationContext: ObservableObject {
   @Published
   var destination = NavigationLinkDestination(EmptyView())
 }
+#endif
 
 public struct NavigationView<Content>: _PrimitiveView where Content: View {
   let content: Content
 
+#if canImport(OpenCombineShim)
   @StateObject
   var context = NavigationContext()
+#endif
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
@@ -54,7 +58,9 @@ public struct _NavigationViewProxy<Content: View> {
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
+#if canImport(OpenCombineShim)
   public var context: NavigationContext { subject.context }
+#endif
 
   /// Builds the content of the `NavigationView` by passing in the title and toolbar if present.
   /// If `toolbarContent` is `nil`, you shouldn't render a toolbar.
@@ -67,12 +73,17 @@ public struct _NavigationViewProxy<Content: View> {
 
   public var content: some View {
     subject.content
+#if canImport(OpenCombineShim)
       .environmentObject(context)
+#endif
   }
 
   public var destination: some View {
+#if canImport(OpenCombineShim)
     subject.context.destination.view
       .environmentObject(context)
+  #endif
+      return fatalError()
   }
 }
 

@@ -16,7 +16,9 @@
 //
 
 import Foundation
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 /// A reconciler modeled after React's
 /// [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
@@ -38,8 +40,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   private let passes: [FiberReconcilerPass]
 
   private let caches: Caches
+#if canImport(OpenCombineShim)
 
   private var sceneSizeCancellable: AnyCancellable?
+    #endif
 
   private var isReconciling = false
   /// The identifiers for each `Fiber` that changed state during the last run loop.
@@ -82,7 +86,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       subviews: Subviews,
       cache: inout ()
     ) -> CGSize {
+        #if canImport(OpenCombineShim)
+
       renderer.sceneSize.value
+        #endif
+        fatalError()
     }
 
     func placeSubviews(
@@ -122,11 +130,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
+#if canImport(OpenCombineShim)
 
     sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
       guard let self = self else { return }
       self.fiberChanged(self.current)
     }
+      #endif
   }
 
   public init<A: App>(_ renderer: Renderer, _ app: A) {
@@ -142,19 +152,24 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     environment.measureImage = renderer.measureImage
     environment.afterReconcile = afterReconcile
     var app = app
+      #if canImport(OpenCombineShim)
+
     current = .init(
       &app,
       rootElement: renderer.rootElement,
       rootEnvironment: environment,
       reconciler: self
     )
+      #endif
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
+#if canImport(OpenCombineShim)
 
     sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
       guard let self = self else { return }
       self.fiberChanged(self.current)
     }
+      #endif
   }
 
   /// A visitor that performs each pass used by the `FiberReconciler`.

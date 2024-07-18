@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType
@@ -25,6 +27,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
    */
   var storage = [Any]()
 
+#if canImport(OpenCombineShim)
   /** An array that stores subscriptions to updates on `@ObservableObject` property wrappers used
     in declarations of this element. These subscriptions are transient and may be cleaned up on
     every re-render of this composite element.
@@ -36,6 +39,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
     element is deallocated.
    */
   var persistentSubscriptions = [AnyCancellable]()
+#endif
 
   init<A: App>(
     _ app: A,

@@ -31,6 +31,8 @@ struct LayoutPass: FiberReconcilerPass {
     while true {
       // Place subviews for each element fiber as we walk the tree.
       if fiber.element != nil {
+          
+#if canImport(OpenCombineShim)
         caches.updateLayoutCache(for: fiber) { cache in
           fiber.layout?.placeSubviews(
             in: .init(
@@ -42,6 +44,7 @@ struct LayoutPass: FiberReconcilerPass {
             cache: &cache.cache
           )
         }
+          #endif
       }
 
       if let child = fiber.child {

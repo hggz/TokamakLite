@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
+#if canImport(OpenCombineShim)
 @propertyWrapper
 public struct StateObject<ObjectType: ObservableObject>: DynamicProperty {
   public var wrappedValue: ObjectType { (getter?() as? ObservedObject.Wrapper)?.root ?? initial() }
@@ -41,3 +44,4 @@ extension StateObject: ValueStorage {
     ObservedObject.Wrapper(root: initial())
   }
 }
+#endif

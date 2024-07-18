@@ -29,9 +29,11 @@ public struct NavigationLink<Label, Destination>: _PrimitiveView where Label: Vi
   var destination: NavigationLinkDestination
 
   let label: Label
+#if canImport(OpenCombineShim)
 
   @EnvironmentObject
   var navigationContext: NavigationContext
+    #endif
 
   @Environment(\._navigationLinkStyle)
   var style
@@ -91,16 +93,26 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
     // subject.label
   }
 
+    
+#if canImport(OpenCombineShim)
   public var context: NavigationContext { subject.navigationContext }
+    #endif
 
   public var style: _AnyNavigationLinkStyle { subject.style }
   public var isSelected: Bool {
+      
+#if canImport(OpenCombineShim)
     subject.destination === subject.navigationContext.destination
+      #endif
+      fatalError()
   }
 
   public func activate() {
     if !isSelected {
+        
+#if canImport(OpenCombineShim)
       subject.navigationContext.destination = subject.destination
+        #endif
     }
   }
 }

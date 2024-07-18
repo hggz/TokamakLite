@@ -15,8 +15,11 @@
 //  Created by Carson Katri on 7/7/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
+#if canImport(OpenCombineShim)
 @propertyWrapper
 public struct EnvironmentObject<ObjectType>: DynamicProperty
   where ObjectType: ObservableObject
@@ -54,9 +57,11 @@ public struct EnvironmentObject<ObjectType>: DynamicProperty
     return Wrapper(root: store)
   }
 
+#if canImport(OpenCombineShim)
   var objectWillChange: AnyPublisher<(), Never> {
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
+#endif
 
   func error() -> Never {
     fatalError("No ObservableObject found for type \(ObjectType.self)")
@@ -72,9 +77,12 @@ extension ObservableObject {
     \.[ObjectIdentifier(self)]
   }
 }
+#endif
 
 public extension View {
+#if canImport(OpenCombineShim)
   func environmentObject<B>(_ bindable: B) -> some View where B: ObservableObject {
     environment(B.environmentStore, bindable)
   }
+#endif
 }

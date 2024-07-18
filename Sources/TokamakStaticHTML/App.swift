@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/31/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 import TokamakCore
 
 public extension App {
@@ -27,6 +29,7 @@ public extension App {
     // no-op: use Title view
   }
 
+#if canImport(OpenCombineShim)
   var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     CurrentValueSubject<ScenePhase, Never>(.active).eraseToAnyPublisher()
   }
@@ -34,4 +37,5 @@ public extension App {
   var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     CurrentValueSubject<ColorScheme, Never>(.light).eraseToAnyPublisher()
   }
+    #endif
 }

@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 7/22/20.
 //
 
+#if canImport(OpenCombineShim)
 import OpenCombineShim
+#endif
 
 public protocol _StorageProvider {
   func store(key: String, value: Bool?)
@@ -29,5 +31,7 @@ public protocol _StorageProvider {
   func read(key: String) -> String?
 
   static var standard: _StorageProvider { get }
+#if canImport(OpenCombineShim)
   var publisher: ObservableObjectPublisher { get }
+#endif
 }
